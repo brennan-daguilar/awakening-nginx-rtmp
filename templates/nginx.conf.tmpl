@@ -143,9 +143,9 @@ rtmp {
         listen 1935;
         notify_method get;
 
-        chunk_size 131072;
+        chunk_size 4096;
         max_message 12M;
-        buflen 2s;
+        buflen 1s;
 
         application pub_${PUBLISH_SECRET} {
             live on;
@@ -153,10 +153,7 @@ rtmp {
             allow play 127.0.0.1;
             deny play all;
 
-            exec_push /usr/local/bin/avconv -i rtmp://localhost/pub_${PUBLISH_SECRET}/$name
-                -filter:v scale=-1:460
-                -c:a libfdk_aac -b:a 32k  -c:v libx264 -b:v 128k  -f flv rtmp://localhost/hls/$name_128
-                -c:a libfdk_aac -b:a 128k -c:v libx264 -b:v 512k  -f flv rtmp://localhost/hls/$name_512;
+            
         }
 
         application player {
